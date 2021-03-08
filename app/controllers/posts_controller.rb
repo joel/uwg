@@ -1,11 +1,18 @@
 # frozen_string_literal: true
 
+require 'pagy/extras/metadata'
+
 class PostsController < ApplicationController
   before_action :set_post, only: %i[ show edit update destroy ]
 
   # GET /posts or /posts.json
   def index
-    @posts = Post.all
+    @pagy, @posts = pagy(Post.all)
+
+    respond_to do |format|
+      format.html
+      format.json { render json: { data: @posts, pagy: pagy_metadata(@pagy) } }
+    end
   end
 
   # GET /posts/1 or /posts/1.json
