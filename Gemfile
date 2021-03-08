@@ -7,6 +7,9 @@ ruby '3.0.0'
 
 gem 'dotenv-rails', require: 'dotenv/rails-now', groups: [:development, :test]
 
+gem 'amazing_print'
+gem 'rails_semantic_logger'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.3'
 # Use pg as the database for Active Record
