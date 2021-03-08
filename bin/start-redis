@@ -3,6 +3,5 @@
 docker run --rm --detach \
  --name upgrow_redis \
  --network upgrow-bridge-docker-network \
- --publish 6379:6379 \
  --mount source=upgrow-redis-data,target=/var/lib/redis/data \
  redis:latest

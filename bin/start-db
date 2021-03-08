@@ -5,7 +5,6 @@ docker run --rm --detach \
   --env POSTGRES_PASSWORD=postgres \
   --env POSTGRES_USER=postgres \
   --network upgrow-bridge-docker-network \
-  --publish 5432:5432 \
   --mount source=upgrow-db-data,target=/var/lib/postgresql/data \
   --mount source=dumps,target=/dumps \
   postgres:latest

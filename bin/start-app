@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+docker run --rm --detach \
+  --name upgrow_app \
+  --env REDIS_URL=redis://upgrow_redis:6379/1 \
+  --env DB_HOST=upgrow_db \
+  --env DB_PORT=5432 \
+  --network upgrow-bridge-docker-network \
+  --publish 3008:3000 \
+  --mount type=bind,source=$PWD,target=/app \
+  local/upgrow:app bin/rails server -p 3000 --early-hints -b 0.0.0.0
