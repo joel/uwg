@@ -6,10 +6,6 @@ require "rails/all"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-DOT_ENVS = %w(development test)
-if DOT_ENVS.include?(Rails.env)
-  Dotenv::Railtie.load if defined?(Dotenv)
-end
 module Upgrowweblog
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
