@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+if [[ -n $1 && $1 == 'production' ]]
+then
+  echo '==============================================='
+  echo '========= RAILS CONSOLE PRODUCTION ============'
+  echo '==============================================='
+
+  docker exec -it upgrow_prod_app sh -c 'rails console'
+else
+	echo "Raisl console development"
+
+  docker exec -it upgrow_app sh -c 'rails console'
+fi
+
+
+#!/usr/bin/env bash
+

@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+if [[ -n $1 && $1 == 'production' ]]
+then
+  echo '==============================================='
+  echo '========= CONTAINER PRODUCTION ================'
+  echo '==============================================='
+
+  string="$@"
+  # echo "params: ${string}"
+
+  array=()
+  while read -rd ' ' || [[ -n "${REPLY}" ]]; do
+    strip_entry=$(echo "${REPLY}" | sed -E 's/[[:space:]]+//g')
+    array+=(${strip_entry})
+  done <<<"${string}"
+
+  # echo "array: $array"
+
+  # for i in ${array[@]}; do
+  #   echo "entry: [${i}]"
+  # done
+
+  params=("${array[@]:1}") # removes the first element
+
+  CMD=""
+  for i in ${params[@]}; do
+    # echo "param: [${i}]"
+    CMD+="${i} "
+  done
+
+  echo "CMD: [${CMD}]"
+
+  docker exec -it upgrow_prod_app sh -c "${CMD}"
+else
+	echo "Container development"
+
+  docker exec -it upgrow_db sh -c "$@"
+fi

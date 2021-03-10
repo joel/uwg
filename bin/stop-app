@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+if [[ -n $1 && $1 == 'production' ]]
+then
+  echo '==============================================='
+  echo '========== STOP PRODUCTION SERVER ============'
+  echo '==============================================='
+
+  docker container stop upgrow_prod_app
+else
+	echo "Stop development server"
+
+  docker container stop upgrow_app
+fi

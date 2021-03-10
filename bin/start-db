@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 
+#
+# --publish 5234:5432 for starting rails server from the host.
+#
+
 docker run --rm --detach \
   --name upgrow_db \
   --env POSTGRES_PASSWORD=postgres \
   --env POSTGRES_USER=postgres \
+  --publish 5234:5432 \
   --network upgrow-bridge-docker-network \
   --mount source=upgrow-db-data,target=/var/lib/postgresql/data \
   --mount source=dumps,target=/dumps \

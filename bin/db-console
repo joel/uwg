@@ -1,3 +1,18 @@
 #!/usr/bin/env bash
 
-docker exec -it upgrow_db sh -c 'psql -U postgres -d upgrow_development'
+if [[ -n $1 && $1 == 'production' ]]
+then
+  echo '==============================================='
+  echo '================ DB PRODUCTION ================'
+  echo '==============================================='
+
+  docker exec -it upgrow_prod_db sh -c 'psql -U postgres -d upgrow_production'
+else
+	echo "DB development"
+
+  docker exec -it upgrow_db sh -c 'psql -U postgres -d upgrow_development'
+fi
+
+
+#!/usr/bin/env bash
+

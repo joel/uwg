@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+#
+# --publish 6379:6379 for starting rails server from the host.
+#
 docker run --rm --detach \
  --name upgrow_redis \
  --network upgrow-bridge-docker-network \

@@ -1,11 +1,34 @@
 #!/usr/bin/env bash
 
-docker run --rm --detach \
-  --name upgrow_app \
-  --env REDIS_URL=redis://upgrow_redis:6379/1 \
-  --env DB_HOST=upgrow_db \
-  --env DB_PORT=5432 \
-  --network upgrow-bridge-docker-network \
-  --publish 3008:3000 \
-  --mount type=bind,source=$PWD,target=/app \
-  local/upgrow:app bin/rails server -p 3000 --early-hints -b 0.0.0.0
+if [[ -n $1 && $1 == 'production' ]]
+then
+  echo '==============================================='
+  echo '========== START PRODUCTION SERVER ============'
+  echo '==============================================='
+
+  docker run --rm --detach \
+    --name upgrow_prod_app \
+    --env REDIS_URL=redis://upgrow_redis:6379/1 \
+    --env DB_HOST=upgrow_db \
+    --env DB_PORT=5432 \
+    --env RAILS_LOG_TO_STDOUT=true \
+    --env LOG_LEVEL=debug \
+    --network upgrow-bridge-docker-network \
+    --publish 3010:3000 \
+    --mount type=bind,source=$PWD,target=/work \
+    prod/upgrow:app bin/rails server -p 3000 --early-hints -b 0.0.0.0
+else
+	echo "Start development server"
+
+  docker run --rm --detach \
+    --name upgrow_app \
+    --env DB_HOST=upgrow_db \
+    --env DB_PORT=5432 \
+    --env RAILS_LOG_TO_STDOUT=true \
+    --env LOG_LEVEL=debug \
+    --env LOG_APPENDER=true \
+    --network upgrow-bridge-docker-network \
+    --publish 3008:3000 \
+    --mount type=bind,source=$PWD,target=/work \
+    local/upgrow:app bin/rails server -p 3000 --early-hints -b 0.0.0.0
+fi
