@@ -1,20 +1,20 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require "test_helper"
 
 class PostTest < ActiveSupport::TestCase
-  test 'the validations' do
+  test "the validations" do
     post = Post.new
     assert_not post.valid?
     assert_match /can't be blank/, post.errors.messages[:title].join
     assert_match /can't be blank/, post.errors.messages[:body].join
   end
 
-  test 'the factory' do
+  test "the factory" do
     assert build(:post).valid?
   end
 
-  test 'the pessimitic lock' do
+  test "the pessimitic lock" do
     post = create(:post)
 
     post_user_john = Post.find(post.id)
@@ -25,7 +25,7 @@ class PostTest < ActiveSupport::TestCase
 
     post_user_jane.save!
 
-    assert_raises(ActiveRecord::StaleObjectError, 'Attempted to update a stale object: Post.') do
+    assert_raises(ActiveRecord::StaleObjectError, "Attempted to update a stale object: Post.") do
       post_user_john.save!
     end
 

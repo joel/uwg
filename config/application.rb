@@ -22,9 +22,9 @@ module Upgrowweblog
     config.active_record.schema_format = :sql
 
     if ENV["RAILS_LOG_TO_STDOUT"].present?
-      STDOUT.sync = true
+      $stdout.sync = true
       config.rails_semantic_logger.add_file_appender = false
-      config.semantic_logger.add_appender(io: STDOUT, level: config.log_level, formatter: config.rails_semantic_logger.format)
+      config.semantic_logger.add_appender(io: $stdout, level: config.log_level, formatter: config.rails_semantic_logger.format)
     end
 
     if ENV["LOG_LEVEL"].present?
@@ -32,9 +32,9 @@ module Upgrowweblog
     end
 
     if ENV["LOG_APPENDER"].present?
-      config.rails_semantic_logger.started    = true
+      config.rails_semantic_logger.started = true
       config.rails_semantic_logger.processing = true
-      config.rails_semantic_logger.rendered   = true
+      config.rails_semantic_logger.rendered = true
     end
   end
 end

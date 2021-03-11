@@ -6,20 +6,19 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-
-AUTHORIZED_ENVS = %w(development)
+AUTHORIZED_ENVS = %w[development]
 unless AUTHORIZED_ENVS.include?(Rails.env)
   Rails.logger.error("You can't seed in [#{Rails.env}]")
   exit 1
 end
 
-require 'ffaker'
+require "ffaker"
 
 prng = Random.new
 
 prng.rand(10..100).times.map do
-  Post.create({ title: FFaker::Book.title, body: FFaker::Book.description })
-  print('.')
+  Post.create({title: FFaker::Book.title, body: FFaker::Book.description})
+  print(".")
 end
 
-puts('done!')
+puts("done!")
