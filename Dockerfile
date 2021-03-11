@@ -19,6 +19,8 @@ RUN apk add --no-cache --update build-base \
   tzdata
 
 ENV BUNDLER_VERSION 2.2.11
+ENV BUNDLE_PATH /bundle
+ENV GEM_HOME /bundle
 ENV BUNDLE_JOBS 20
 ENV BUNDLE_RETRY 5
 ENV BUNDLE_WITHOUT production
@@ -34,6 +36,4 @@ COPY Gemfile.lock $APP_PATH
 
 RUN gem install bundler -v $BUNDLER_VERSION
 
-COPY . $APP_PATH
-
-RUN (bundle check || bundle install)
+ENTRYPOINT ["./docker-entrypoint.sh"]
