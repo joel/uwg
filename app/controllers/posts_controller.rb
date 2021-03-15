@@ -10,18 +10,17 @@ class PostsController < ApplicationController
   def index
     @pagy, @posts = pagy_array(PostRepository.new.all)
 
-    # if stale?(@posts)
-    respond_to do |format|
-      format.html
-      format.json { render json: {data: @posts, pagy: pagy_metadata(@pagy)} }
+    if stale?(@posts)
+      respond_to do |format|
+        format.html
+        format.json { render json: {data: @posts, pagy: pagy_metadata(@pagy)} }
+      end
     end
-    # end
   end
 
   # GET /posts/1 or /posts/1.json
   def show
-    # fresh_when @post
-    # @post = ShowPostAction.new.perform(params[:id]).post
+    fresh_when @post
   end
 
   # GET /posts/new

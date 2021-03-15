@@ -41,3 +41,5 @@ yarn-debug.log*
 PRIVATE_NOTES
 .env.development.local
 .env
+
+dev-gems

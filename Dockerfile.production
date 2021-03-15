@@ -34,6 +34,8 @@ WORKDIR $APP_PATH
 # Gems installation
 COPY Gemfile Gemfile.lock ./
 
+COPY dev-gems ./dev-gems
+
 RUN bundle config --global frozen 1 && \
     bundle install && \
     rm -rf /usr/local/bundle/cache/*.gem && \
