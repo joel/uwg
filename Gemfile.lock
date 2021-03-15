@@ -1,5 +1,5 @@
 PATH
-  remote: /work/dev-gems/upgrow
+  remote: ../../../GitHub/clones/upgrow
   specs:
     upgrow (0.0.1)
       activemodel (~> 6.1)
