@@ -33,4 +33,16 @@ class PostTest < ActiveSupport::TestCase
     post_user_john.title = FFaker::Book.title
     assert post_user_john.save
   end
+
+  test "eager uuid" do
+    post = Post.new
+
+    uuid = post.id
+
+    post.assign_attributes(attributes_for(:post))
+
+    post.save!
+
+    assert_equal uuid, post.id
+  end
 end
