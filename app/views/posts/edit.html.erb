@@ -1,6 +1,12 @@
 <h1>Editing Post</h1>
 
-<%= render 'form', post: @post %>
+<%= form_with(model: @input, method: :patch, url: post_path(params[:id])) do |form| %>
+  <%= render 'form', post: @input, form: form %>
 
-<%= link_to 'Show', @post %> |
+  <div class="actions">
+    <%= form.submit "Update Post" %>
+  </div>
+<% end %>
+
+<%= link_to 'Show', post_path(@post.id) %> |
 <%= link_to 'Back', posts_path %>

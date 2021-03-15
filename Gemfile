@@ -39,6 +39,8 @@ gem "rexml" # missing in Ruby 3.0.0
 
 gem "pagy"
 
+gem "upgrow", path: "../../../GitHub/clones/upgrow"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "pry-byebug", platforms: [:mri, :mingw, :x64_mingw]

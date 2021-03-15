@@ -7,61 +7,73 @@ class PostsController < ApplicationController
 
   # GET /posts or /posts.json
   def index
-    @pagy, @posts = pagy(Post.all)
-
-    if stale?(@posts)
-      respond_to do |format|
-        format.html
-        format.json { render json: {data: @posts, pagy: pagy_metadata(@pagy)} }
-      end
+    # @pagy, @posts = pagy(PostRepository.new.all)
+    @posts = PostRepository.new.all
+    # if stale?(@posts)
+    respond_to do |format|
+      format.html
+      format.json { render json: {data: @posts, pagy: pagy_metadata(@pagy)} }
     end
+    # end
   end
 
   # GET /posts/1 or /posts/1.json
   def show
-    fresh_when @post
+    # fresh_when @post
+    # @post = ShowPostAction.new.perform(params[:id]).post
   end
 
   # GET /posts/new
   def new
-    @post = Post.new
+    @input = PostInput.new
   end
 
   # GET /posts/1/edit
   def edit
+    # @input = PostInput.new(title: post.title, body: post.body)
+    post = EditPostAction.new.perform(params[:id]).post
+    @input = PostInput.new(
+      title: post.title, body: post.body
+    )
   end
 
   # POST /posts or /posts.json
   def create
-    @post = Post.new(post_params)
+    @input = PostInput.new(post_params)
 
     respond_to do |format|
-      if @post.save
-        format.html { redirect_to @post, notice: "Post was successfully created." }
-        format.json { render :show, status: :created, location: @post }
-      else
+      CreatePostAction.new.perform(@input).and_then do |post|
+        format.html { redirect_to post_path(post.id), notice: "Post was successfully created." }
+        format.json { render :show, status: :created, location: post_path(post.id) }
+      end
+        .or_else do |errors|
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
+        format.json { render json: errors, status: :unprocessable_entity }
       end
     end
   end
 
   # PATCH/PUT /posts/1 or /posts/1.json
   def update
+    @input = PostInput.new(post_params)
+
     respond_to do |format|
-      if @post.update(post_params)
-        format.html { redirect_to @post, notice: "Post was successfully updated." }
-        format.json { render :show, status: :ok, location: @post }
-      else
+      UpdatePostAction.new.perform(params[:id], @input)
+        .and_then do |post|
+        format.html { redirect_to post_path(post.id), notice: "Post was successfully updated." }
+        format.json { render :show, status: :ok, location: post_path(post.id) }
+      end
+        .or_else do |errors|
         format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
+        format.json { render json: errors, status: :unprocessable_entity }
       end
     end
   end
 
   # DELETE /posts/1 or /posts/1.json
   def destroy
-    @post.destroy
+    DeletePostAction.new.perform(params[:id])
+
     respond_to do |format|
       format.html { redirect_to posts_url, notice: "Post was successfully destroyed." }
       format.json { head :no_content }
@@ -72,11 +84,11 @@ class PostsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_post
-    @post = Post.find(params[:id])
+    @post = ShowPostAction.new.perform(params[:id]).post
   end
 
   # Only allow a list of trusted parameters through.
   def post_params
-    params.require(:post).permit(:title, :body)
+    params.require(:post_input).permit(:title, :body)
   end
 end
