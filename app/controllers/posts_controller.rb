@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
 require "pagy/extras/metadata"
+require "pagy/extras/array"
 
 class PostsController < ApplicationController
   before_action :set_post, only: %i[show edit update destroy]
 
   # GET /posts or /posts.json
   def index
-    # @pagy, @posts = pagy(PostRepository.new.all)
-    @posts = PostRepository.new.all
+    @pagy, @posts = pagy_array(PostRepository.new.all)
+
     # if stale?(@posts)
     respond_to do |format|
       format.html
