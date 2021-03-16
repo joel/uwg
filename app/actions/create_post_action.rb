@@ -4,6 +4,7 @@ class CreatePostAction < Upgrow::Action
   def perform(input)
     if input.valid?
       post = PostRepository.new.create(input)
+      PostsChannel.broadcast(post)
       result.success(post: post)
     else
       result.failure(input.errors)
