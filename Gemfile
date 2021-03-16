@@ -12,8 +12,6 @@ gem "rails_semantic_logger"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem "rails", "~> 6.1.3"
-# Use pg as the database for Active Record
-gem "pg", "~> 1.2"
 # Use Puma as the app server
 gem "puma", "~> 5.0"
 # Use SCSS for stylesheets
@@ -40,6 +38,11 @@ gem "rexml" # missing in Ruby 3.0.0
 gem "pagy"
 
 gem "upgrow", path: "../../../GitHub/clones/upgrow"
+
+group :development, :production do
+  # Use pg as the database for Active Record
+  gem "pg", "~> 1.2"
+end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -68,6 +71,8 @@ group :test do
   # Easy installation and use of web drivers to run system tests with browsers
   gem "webdrivers"
   gem "mocha"
+   # Use sqlite3 as the database for Active Record
+  gem 'sqlite3', '~> 1.4'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

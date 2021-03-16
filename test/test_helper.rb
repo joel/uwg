@@ -2,6 +2,10 @@
 
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
+
+# must load BEFORE rails/test_help
+require_relative './db/sqlite_test_db_loader.rb'
+
 require "rails/test_help"
 
 begin
@@ -12,16 +16,31 @@ end
 require "mocha/minitest"
 
 Dir[Rails.root.join("test/support/**/*.rb")].sort.each { |f| require f }
+
+# This assumes you're sharing config between unit/integration
+module TestSetup
+  extend ActiveSupport::Concern
+
+  included do
+    include FactoryBot::Syntax::Methods
+    include ModelFactory
+    include InputFactory
+
+    # Run tests in parallel with specified workers
+    parallelize(workers: :number_of_processors)
+
+    # Make sure that you reload the sqlite when starting processes
+    parallelize_setup do
+      # slightly more efficient than a direct call to establish_connection
+      ActiveRecord::Migration.check_pending!
+    end
+  end
+end
+
 class ActiveSupport::TestCase
-  include FactoryBot::Syntax::Methods
-  include ModelFactory
-  include InputFactory
+  include TestSetup
+end
 
-  # Run tests in parallel with specified workers
-  parallelize(workers: :number_of_processors)
-
-  # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
-  fixtures :all
-
-  # Add more helper methods to be used by all tests here...
+class ActionDispatch::IntegrationTest
+  include TestSetup
 end
