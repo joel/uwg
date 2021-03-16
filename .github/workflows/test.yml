@@ -1,0 +1,94 @@
+name: Tests
+
+on: [push,pull_request]
+
+jobs:
+  # Label of the runner job
+  runner-job:
+    name: Run Test Suite
+    runs-on: ubuntu-latest
+
+    # Services
+    services:
+      db:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+
+        # Set health checks to wait until db has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.0.0
+
+    - name: Cache gems
+      uses: actions/cache@v1
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-test-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-test-
+
+    - name: Install Ruby dependencies
+      run: |
+        sudo apt-get --assume-yes install libpq-dev
+        gem install bundler:2.2.11
+        bundle config path vendor/bundle
+        bundle config set without 'production'
+        bundle install --jobs 4 --retry 3
+
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+
+    - name: Cache Js dependencies
+      uses: actions/cache@v2
+      id: yarn-cache
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+
+    - name: Install NodeJs
+      uses: actions/setup-node@v1
+      with:
+        node-version: 15.5.1
+
+    - name: Cache Node Modules
+      uses: actions/cache@v2
+      with:
+        path: '**/node_modules'
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+    - name: Install Js dependencies
+      if: steps.yarn-cache.outputs.cache-hit != 'true'
+      run: yarn --frozen-lockfile
+
+    - name: Create data store
+      env:
+        RAILS_ENV: test
+        DB_HOST: localhost
+        DB_PORT: 5432
+      run: |
+        bundle exec rails db:create
+        bundle exec rails db:migrate
+
+    - name: Run tests
+      run: bundle exec rails test:all
+      env:
+        DB_HOST: localhost
+        DB_PORT: 5432
