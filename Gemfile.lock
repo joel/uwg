@@ -124,7 +124,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.11.1-x86_64-darwin)
       racc (~> 1.4)
-    pagy (3.11.0)
+    pagy (4.1.0)
     parallel (1.20.1)
     parser (3.0.0.0)
       ast (~> 2.4.1)
@@ -257,7 +257,8 @@ GEM
     zeitwerk (2.4.2)
 
 PLATFORMS
-  aarch64-linux-musl
+  aarch64-linux
+  ruby
   x86_64-darwin-20
 
 DEPENDENCIES
