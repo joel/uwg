@@ -6,6 +6,7 @@ jobs:
   build:
     name: Build Docker Image
     runs-on: ubuntu-latest
+
     steps:
       -
         name: Docker Build

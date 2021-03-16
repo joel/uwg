@@ -3,7 +3,7 @@ class SqliteTestDbLoader
   REPLACEMENTS = {
     /enable_extension/ => '# enable_extension',
     /id: :uuid/ => 'id: :string',
-    /default: -> { "gen_random_uuid\(\)" },/ => ''
+    /default: -> { "gen_random_uuid\(\)" }, / => ''
   }.freeze
 
   class << self
@@ -28,9 +28,9 @@ class SqliteTestDbLoader
     output = REPLACEMENTS.reduce(schema) do |res, replacement|
       res.gsub(*replacement)
     end
-    # output.split("\n").each do |line|
-    #   puts line
-    # end
+    output.split("\n").each do |line|
+      puts line
+    end
     output
   end
 

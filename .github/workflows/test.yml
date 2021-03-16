@@ -3,28 +3,9 @@ name: Tests
 on: [push,pull_request]
 
 jobs:
-  # Label of the runner job
-  runner-job:
+  test:
     name: Run Test Suite
     runs-on: ubuntu-latest
-
-    # Services
-    services:
-      db:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: postgres
-
-        # Set health checks to wait until db has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          # Maps tcp port 5432 on service container to the host
-          - 5432:5432
 
     steps:
     - uses: actions/checkout@v2
@@ -78,17 +59,5 @@ jobs:
       if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: yarn --frozen-lockfile
 
-    - name: Create data store
-      env:
-        RAILS_ENV: test
-        DB_HOST: localhost
-        DB_PORT: 5432
-      run: |
-        bundle exec rails db:create
-        bundle exec rails db:migrate
-
     - name: Run tests
       run: bundle exec rails test:all
-      env:
-        DB_HOST: localhost
-        DB_PORT: 5432
