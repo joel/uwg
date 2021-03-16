@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ShowPostAction < Upgrow::Action
   result :post
 
