@@ -1,9 +1,9 @@
 #### evals the schema into the current process
 class SqliteTestDbLoader
   REPLACEMENTS = {
-    /enable_extension/ => '# enable_extension',
-    /id: :uuid/ => 'id: :string',
-    /default: -> { "gen_random_uuid\(\)" }, / => ''
+    /enable_extension/ => "# enable_extension",
+    /id: :uuid/ => "id: :string",
+    /default: -> { "gen_random_uuid\(\)" }, / => ""
   }.freeze
 
   class << self
@@ -18,7 +18,7 @@ class SqliteTestDbLoader
   def extract
     File.read(
       Rails.root.join(
-        'db', 'schema.rb'
+        "db", "schema.rb"
       )
     )
   end
@@ -69,10 +69,10 @@ end
 module PreserveParallelMemoryDatabase
   def create_and_load_schema(i, env_name:)
     if ActiveRecord::Base
-       .configurations
-       .configs_for(env_name: env_name)
-       .to_s.match(/:memory:/m)
-      puts 'Memory database found. Skipping db creation'
+        .configurations
+        .configs_for(env_name: env_name)
+        .to_s.match?(/:memory:/m)
+      puts "Memory database found. Skipping db creation"
       ActiveRecord::Base.establish_connection(Rails.env.to_sym)
       return
     end

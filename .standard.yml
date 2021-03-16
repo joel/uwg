@@ -7,3 +7,4 @@ default_ignores: false  # default: true
 ignore:                 # default: []
   - 'vendor/**/*'
   - 'node_modules/**/*'
+  - 'test/db/*'

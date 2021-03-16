@@ -37,7 +37,7 @@ gem "rexml" # missing in Ruby 3.0.0
 
 gem "pagy"
 
-gem "upgrow", path: "../../../GitHub/clones/upgrow"
+gem "upgrow", github: "joel/upgrow"
 
 group :development, :production do
   # Use pg as the database for Active Record
@@ -71,8 +71,8 @@ group :test do
   # Easy installation and use of web drivers to run system tests with browsers
   gem "webdrivers"
   gem "mocha"
-   # Use sqlite3 as the database for Active Record
-  gem 'sqlite3', '~> 1.4'
+  # Use sqlite3 as the database for Active Record
+  gem "sqlite3", "~> 1.4"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

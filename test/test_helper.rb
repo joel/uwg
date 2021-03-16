@@ -4,7 +4,7 @@ ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 
 # must load BEFORE rails/test_help
-require_relative './db/sqlite_test_db_loader.rb'
+require_relative "./db/sqlite_test_db_loader"
 
 require "rails/test_help"
 
