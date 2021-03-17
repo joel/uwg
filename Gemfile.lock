@@ -74,6 +74,7 @@ GEM
     bindex (0.8.1)
     bootsnap (1.7.2)
       msgpack (~> 1.0)
+    brakeman (5.0.0)
     builder (3.2.4)
     bullet (6.1.4)
       activesupport (>= 3.0.0)
@@ -272,6 +273,7 @@ PLATFORMS
 DEPENDENCIES
   amazing_print
   bootsnap (>= 1.4.4)
+  brakeman
   bullet
   capybara (>= 3.26)
   dotenv-rails

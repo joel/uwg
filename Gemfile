@@ -50,6 +50,7 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "standard"
   gem "dotenv-rails", require: "dotenv/rails-now"
+  gem "brakeman"
 end
 
 group :development do
