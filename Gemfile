@@ -52,6 +52,7 @@ group :development, :test do
   gem "dotenv-rails", require: "dotenv/rails-now"
   gem "brakeman"
   gem "reek"
+  gem "rails_best_practices"
 end
 
 group :development do
