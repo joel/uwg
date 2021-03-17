@@ -39,6 +39,14 @@ end
 
 class ActiveSupport::TestCase
   include TestSetup
+
+  setup do
+    Prosopite.scan
+  end
+
+  teardown do
+    Prosopite.finish
+  end
 end
 
 class ActionDispatch::IntegrationTest
