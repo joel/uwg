@@ -5,8 +5,6 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.0.0"
 
-gem "dotenv-rails", require: "dotenv/rails-now", groups: [:development, :test]
-
 gem "amazing_print"
 gem "rails_semantic_logger"
 
@@ -51,6 +49,7 @@ group :development, :test do
   gem "ffaker"
   gem "factory_bot_rails"
   gem "standard"
+  gem "dotenv-rails", require: "dotenv/rails-now"
 end
 
 group :development do
