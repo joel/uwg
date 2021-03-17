@@ -10,7 +10,7 @@ class SqliteTestDbLoader
     def reload!(context)
       new.reload!
     ensure
-      puts "Reloaded Schema: #{context}"
+      puts "Reloaded Schema: [#{context}]"
     end
   end
 
@@ -28,9 +28,9 @@ class SqliteTestDbLoader
     output = REPLACEMENTS.reduce(schema) do |res, replacement|
       res.gsub(*replacement)
     end
-    output.split("\n").each do |line|
-      puts line
-    end
+    # output.split("\n").each do |line|
+    #   puts line
+    # end
     output
   end
 
@@ -72,8 +72,10 @@ module PreserveParallelMemoryDatabase
         .configurations
         .configs_for(env_name: env_name)
         .to_s.match?(/:memory:/m)
+
       puts "Memory database found. Skipping db creation"
       ActiveRecord::Base.establish_connection(Rails.env.to_sym)
+
       return
     end
     super
