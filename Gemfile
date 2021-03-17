@@ -51,6 +51,7 @@ group :development, :test do
   gem "standard"
   gem "dotenv-rails", require: "dotenv/rails-now"
   gem "brakeman"
+  gem "reek"
 end
 
 group :development do

@@ -1,0 +1,15 @@
+---
+
+### Generic smell configuration
+
+detectors:
+  # You can disable smells completely
+  IrresponsibleModule:
+    enabled: false
+
+### Excluding directories
+
+# Directories and files below will not be scanned at all
+exclude_paths:
+  - db
+  - test
