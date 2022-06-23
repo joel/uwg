@@ -11,7 +11,7 @@ gem "amazing_print"
 gem "rails_semantic_logger"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
-gem "rails", "~> 6.1.3"
+gem "rails", "~> 6.1.4"
 # Use pg as the database for Active Record
 gem "pg", "~> 1.2"
 # Use Puma as the app server
